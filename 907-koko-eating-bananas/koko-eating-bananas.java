@@ -1,28 +1,26 @@
-class Solution {
+public class Solution {
     public int minEatingSpeed(int[] piles, int h) {
-        int left = 1; // minimum speed must be at least 1
-        int right = 0;
-        for (int pile : piles) {
-            right = Math.max(right, pile); // maximum pile size
-        }
+        int left = 1;  
+        int right = Arrays.stream(piles).max().getAsInt();
+        int ans = right;
 
         while (left <= right) {
             int mid = left + (right - left) / 2;
-            if (canEat(piles, mid, h)) {
-                right = mid - 1; // try smaller speed
+            if (canFinish(piles, h, mid)) {
+                ans = mid;     
+                right = mid - 1;
             } else {
-                left = mid + 1; // need larger speed
+                left = mid + 1; 
             }
         }
-        return left; // left will hold the minimum valid speed
+        return ans;
     }
 
-    public boolean canEat(int[] piles, int k, int h) {
-        long hours = 0; // use long to avoid overflow
-        for (int bananas : piles) {
-            // ceiling division: (bananas + k - 1) / k
-            hours += (bananas + k - 1) / k;
-            if (hours > h) return false; // early exit if already too many hours
+    public boolean canFinish(int[] piles, int h, int k) {
+        long hours = 0;
+        for (int pile : piles) {
+            hours += pile / k;
+            if (pile % k != 0) hours++;
         }
         return hours <= h;
     }
