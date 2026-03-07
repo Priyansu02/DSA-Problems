@@ -19,7 +19,7 @@ class Solution {
                     if(color[ne]==0){
                         color[ne] =-color[curr];
                         q.add(ne);
-                    }else if(color[ne] != -color[curr]){
+                    }else if(color[ne] ==color[curr]){
                         return false;
                     }
                 }
