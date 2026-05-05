@@ -1,22 +1,31 @@
 class Solution {
     public int findTargetSumWays(int[] nums, int target) {
-        return helper(nums, 0, 0, target);
+       int total = 0;
+        for (int num : nums) total += num;
+
+        // If impossible, return 0
+        if ((total + target) % 2 != 0 || total < Math.abs(target))  return 0;
+
+        int S1 = (total + target) / 2;
+        return helper(nums, S1);
     }
 
-    private int helper(int[] nums, int index, int curSum, int target) {
-        // Base case: when we reach the end of the array
-        if (index == nums.length) {
-            // Check if we have reached the target sum
-            if (curSum == target) {
-                return 1; // Return 1 to indicate that we have found a valid combination
-            } else {
-                return 0; // Return 0 to indicate that we have not found a valid combination
+    private int helper(int[] nums, int sum) {
+       int n=nums.length;
+       int dp[][]= new int[n+1][sum+1];
+
+       dp[0][0]=1;
+
+        for(int i=1;i<= n; i++){
+            for(int j=0; j<= sum; j++){
+                dp[i][j]= dp[i-1][j];
+
+                if(nums[i-1]<= j){
+                    dp[i][j] += dp[i-1][j-nums[i-1]];
+                }
             }
-        }
-        
-        // Recursive case: we can either add or subtract the current number to the current sum
-        int left = helper(nums, index + 1, curSum + nums[index], target); // Add the current number to the current sum
-        int right = helper(nums, index + 1, curSum - nums[index], target); // Subtract the current number from the current sum
-        return left + right; // Return the sum of the results obtained from the left and right subproblems
+       }
+
+       return dp[n][sum];
     }
 }
