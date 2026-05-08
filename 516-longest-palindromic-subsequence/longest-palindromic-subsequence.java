@@ -1,26 +1,34 @@
 class Solution {
     public int longestPalindromeSubseq(String s) {
-        int n = s.length();
-        int[][] dp = new int[n][n];
+        int dp[][] = new int[s.length()][s.length()];
+        for(int i[] : dp){
+            Arrays.fill(i,-1);
+        }
+        return helper(0,s.length()-1,s,dp);
+    }
 
-        // Base case: single characters
-        for (int i = 0; i < n; i++) {
-            dp[i][i] = 1;
+    public int helper(int i, int j, String s, int dp[][]){
+        if(i>=s.length() || j<0 || i>j){
+            return 0;
+        }
+        if(dp[i][j]!=-1){
+            return dp[i][j];
         }
 
-        // Fill table for substrings of increasing length
-        for (int len = 2; len <= n; len++) {
-            for (int i = 0; i <= n - len; i++) {
-                int j = i + len - 1;
+        int ans=0;
 
-                if (s.charAt(i) == s.charAt(j)) {
-                    dp[i][j] = 2 + dp[i + 1][j - 1];
-                } else {
-                    dp[i][j] = Math.max(dp[i + 1][j], dp[i][j - 1]);
-                }
-            }
+        if(i==j){
+            ans =  1;
+        }
+        else if(s.charAt(i)==s.charAt(j)){
+            ans= 2+ helper(i+1,j-1,s,dp);
+        }
+        else{
+            int opt1 = helper(i+1,j,s,dp);
+            int opt2 = helper(i,j-1,s,dp);
+            ans = Math.max(opt1,opt2);
         }
 
-        return dp[0][n - 1];
+        return dp[i][j]= ans;
     }
 }
