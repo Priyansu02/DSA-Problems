@@ -1,15 +1,17 @@
 class Solution {
     public boolean carPooling(int[][] trips, int capacity) {
-        int lengthOfTrip[] = new int[1001];
+        int[] changes = new int[1001]; // since max location = 1000
         
-        for(int trip[] : trips){
-            lengthOfTrip[trip[1]] += trip[0]; // Increment when passenger is on board
-            lengthOfTrip[trip[2]] -= trip[0]; // decrement when they depart
+        for (int[] trip : trips) {
+            int num = trip[0], from = trip[1], to = trip[2];
+            changes[from] += num;   // pick up
+            changes[to] -= num;     // drop off
         }
         
-        for(int passenger : lengthOfTrip){
-            capacity -= passenger;
-            if(capacity < 0) return false;
+        int passengers = 0;
+        for (int i = 0; i <= 1000; i++) {
+            passengers += changes[i];
+            if (passengers > capacity) return false;
         }
         return true;
     }
