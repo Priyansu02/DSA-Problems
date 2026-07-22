@@ -1,6 +1,6 @@
 class Solution {
     public int[] relativeSortArray(int[] arr1, int[] arr2) {
-       // int ans[]=new int[arr1.length];
+        int ans[]=new int[arr1.length];
         List<Integer> result = new ArrayList<>();
          for(int i=0;i<arr2.length;i++){
             for(int j=0;j<arr1.length;j++){
@@ -19,6 +19,10 @@ class Solution {
             }
          }
 
-        return result.stream().mapToInt(Integer::intValue).toArray();
+         for(int i=0;i<result.size();i++){
+            ans[i]=result.get(i);
+         }
+
+        return ans;
     }
 }
