@@ -1,28 +1,40 @@
 class Solution {
     public int[] relativeSortArray(int[] arr1, int[] arr2) {
-        int ans[]=new int[arr1.length];
-        List<Integer> result = new ArrayList<>();
-         for(int i=0;i<arr2.length;i++){
-            for(int j=0;j<arr1.length;j++){
-                if(arr1[j]==arr2[i]){
-                    result.add(arr1[j]);
-                    arr1[j]=-1;
+        HashMap<Integer,Integer> hm = new HashMap<>();
+        for (int j : arr1) {
+            if (hm.containsKey(j)) {
+                hm.put(j, hm.get(j) + 1);
+            } else {
+                hm.put(j, 1);
+            }
+        }
+        int[] ans = new int[arr1.length];
+        int cnt=0;
+        for (int j : arr2) {
+            while (hm.get(j) > 0) {
+                ans[cnt] = j;
+                cnt++;
+                hm.put(j, hm.get(j) - 1);
+            }
+            hm.remove(j);
+        }
+        int[] remaining = new int[arr1.length-cnt];
+        int index = 0;
+        for (int j : arr1) {
+            if (hm.containsKey(j)) {
+                while (hm.get(j) > 0) {
+                    remaining[index] = j;
+                    index++;
+                    hm.put(j, hm.get(j) - 1);
                 }
+                hm.remove(j);
             }
-         }
-
-         Arrays.sort(arr1);
-
-         for(int i=0;i<arr1.length;i++){
-            if(arr1[i] != -1){
-                result.add(arr1[i]);
-            }
-         }
-
-         for(int i=0;i<result.size();i++){
-            ans[i]=result.get(i);
-         }
-
+        }
+        Arrays.sort(remaining);
+        for (int j : remaining) {
+            ans[cnt] = j;
+            cnt++;
+        }
         return ans;
     }
 }
