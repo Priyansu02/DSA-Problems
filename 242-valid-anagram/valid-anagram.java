@@ -4,19 +4,20 @@ class Solution {
             return false;
         }
 
-        int arr[]=new int [26];
+       int freq[]=new int[26];
 
-        for(int i=0;i<s.length();i++){
-            arr[s.charAt(i) - 'a']++;
-            arr[t.charAt(i) - 'a']--;
+       for(int i=0;i<s.length();i++){
+        freq[s.charAt(i)-'a']++;
+        freq[t.charAt(i)-'a']--;
 
+       }
+
+       for(int f:freq){
+        if(f != 0){
+            return false;
         }
+       }
 
-        for(int i: arr){
-            if(i !=0){
-                return false;
-            }
-        }
-        return true;
+       return true;
     }
 }
