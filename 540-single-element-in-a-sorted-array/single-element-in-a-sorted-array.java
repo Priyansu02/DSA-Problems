@@ -1,11 +1,26 @@
 class Solution {
-    public int singleNonDuplicate(int[] nums) {
-         for(int i=1;i<nums.length;i+=2){
-         if(nums[i]!=nums[i-1]){
-             return nums[i-1];
-         }   
+public int singleNonDuplicate(int nums[]) {
+        //BINARY SEARCH APPROACH
+        int low = 0;
+        int high = nums.length-1;
+
+        while(low < high)
+        {
+            int mid = low + (high - low)/2;
+
+            if(mid % 2 == 0 && nums[mid] == nums[mid+1])
+            {
+                low = mid+2;
+            }
+            else if(mid % 2 != 0 && nums[mid] == nums[mid-1])
+            {
+                low = mid+1;
+            }
+            else
+            {
+                high = mid;
+            }
         }
-	
-        return nums[nums.length-1];
+        return nums[low];
     }
 }
